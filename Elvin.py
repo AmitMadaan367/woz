@@ -183,121 +183,117 @@ for codess in body:
 # driver = webdriver.Chrome('chromedriver.exe')
 for codess in body:
     print("coooooo",codess)
-    try:
-        driver = webdriver.Firefox(firefox_options=options)
-        driver.get("https://www.wozwaardeloket.nl/index.jsp")
-        time.sleep(4)
-        driver.find_element_by_xpath("//input[@class='ui-button ui-widget ui-state-default ui-corner-all']").click()
-        time.sleep(4)
-        driver.find_element_by_xpath("//input[@id='zoeklocatie']").send_keys(str(codess))
-        time.sleep(2)
-        driver.find_element_by_xpath("//button[@id='zoeklocatieSubmit']").click()
-        time.sleep(3)
-        lin=driver.find_elements_by_xpath("//div[@class='locatielijst']/a")
-        for i in lin:
-            try:
-                i.click()
-                time.sleep(5)
-                title1=[]
-                value1=[]
-                title=driver.find_elements_by_xpath("//table[@class='detailstable']/tbody/tr/th")
-                value=driver.find_elements_by_xpath("//table[@class='detailstable']/tbody/tr/td")
-                for i,j in zip(title,value):
-                    if len(i.text) >0:
-                        title1.append(i.text)
-                        value1.append(j.text)
-                dat=driver.find_elements_by_xpath("//table[@class='detailstable dataTable no-footer']/tbody/tr/td")
-                date=[]
-                price=[]
-                z=1
-                for i in dat:
-        #             print(i.text)
-        #             print("-------------------")
-                    if z%2==0:
-                        price.append(str(i.text).replace("euro",""))
-                    else:
-                        date.append(i.text)
-                    z=z+1
-                miss=driver.find_elements_by_xpath("//table[@class='detailstable dataTable no-footer']/thead/tr/th")
-                z=1
-                for i in miss:
-                    print(i.text)
-                    if z%2==0:
-                        value1.append(i.text)
-                    else:
-                        title1.append(i.text)
-                    z=z+1
-                data={}
-                for a,b in zip(title1,value1):
-        #             print(a.lower(),"00000000000000000",b)
-                    a=a.lower().strip()
-                    data.update({a.replace(":",""):b})
-                if len(str(data['postcode']))<=0:
-                    continue
-                huisnummer=""
-                street=""
-                huisnummer_extentie=""
-                ads=data['adres'].split(" ")
-                huisnummer=str(ads[-1]).strip()
-                street=ads[0]
-                for id in roman:
-                    if id in huisnummer:
-                        huisnummer_extentie=id
-
-                footers=[]    
-                if len(huisnummer_extentie)==0:
-                    footers = re.findall(r'[a-z][a-z][a-z][a-z][a-z]',huisnummer)  
-                if len(footers)==0:
-                    footers = re.findall(r'[a-z][a-z][a-z][a-z]',huisnummer)  
-                if len(footers)==0:
-                    footers = re.findall(r'[a-z][a-z][a-z]',huisnummer)
-                if len(footers)==0:
-                    footers = re.findall(r'[a-z][a-z]',huisnummer) 
-                if len(footers)==0:
-                    footers = re.findall(r'[a-z]',huisnummer) 
-                if len(footers)==0:
-                    footers = re.findall(r'[A-Z][A-Z][A-Z][A-Z]',huisnummer) 
-                if len(footers)==0:
-                    footers = re.findall(r'[A-Z][A-Z][A-Z]',huisnummer) 
-                if len(footers)==0:
-                    footers = re.findall(r'[A-Z][A-Z]',huisnummer) 
-                if len(footers)==0:
-                    footers = re.findall(r'[A-Z]',huisnummer) 
-                # printing result 
-                print ("The list of words is : " +  str(footers))
-
-                if len(footers)>0:
-                    huisnummer_extentie=footers[0]
-                huisnummer=huisnummer.replace(huisnummer_extentie,"")
-
-                for i in ads:
-                    if len(i)==1:
-                        huisnummer_extentie=i
-                data.update({"street":street,"huisnummer":huisnummer,"huisnummer_extentie":huisnummer_extentie})
-                for c,d in zip(date,price):
-                #     print(c,d)
-                    num=str(c).split("-")
-                #     print(num)
-                    key="wozwaarde_"+str(num[-1])
-            #         print(key,d)
-                    data.update({key:d})
-                if len(huisnummer_extentie)==0:
-                    house_id=str(data['postcode']).strip().replace(" ","")+"-"+str(data['huisnummer']).strip()
+    driver = webdriver.Firefox(firefox_options=options)
+    driver.get("https://www.wozwaardeloket.nl/index.jsp")
+    time.sleep(4)
+    driver.find_element_by_xpath("//input[@class='ui-button ui-widget ui-state-default ui-corner-all']").click()
+    time.sleep(4)
+    driver.find_element_by_xpath("//input[@id='zoeklocatie']").send_keys(str(codess))
+    time.sleep(2)
+    driver.find_element_by_xpath("//button[@id='zoeklocatieSubmit']").click()
+    time.sleep(3)
+    lin=driver.find_elements_by_xpath("//div[@class='locatielijst']/a")
+    for i in lin:
+        try:
+            i.click()
+            time.sleep(5)
+            title1=[]
+            value1=[]
+            title=driver.find_elements_by_xpath("//table[@class='detailstable']/tbody/tr/th")
+            value=driver.find_elements_by_xpath("//table[@class='detailstable']/tbody/tr/td")
+            for i,j in zip(title,value):
+                if len(i.text) >0:
+                    title1.append(i.text)
+                    value1.append(j.text)
+            dat=driver.find_elements_by_xpath("//table[@class='detailstable dataTable no-footer']/tbody/tr/td")
+            date=[]
+            price=[]
+            z=1
+            for i in dat:
+    #             print(i.text)
+    #             print("-------------------")
+                if z%2==0:
+                    price.append(str(i.text).replace("euro",""))
                 else:
-                    house_id=str(data['postcode']).strip().replace(" ","")+"-"+str(data['huisnummer']).strip()+"-"+str(data['huisnummer_extentie'])
+                    date.append(i.text)
+                z=z+1
+            miss=driver.find_elements_by_xpath("//table[@class='detailstable dataTable no-footer']/thead/tr/th")
+            z=1
+            for i in miss:
+                print(i.text)
+                if z%2==0:
+                    value1.append(i.text)
+                else:
+                    title1.append(i.text)
+                z=z+1
+            data={}
+            for a,b in zip(title1,value1):
+    #             print(a.lower(),"00000000000000000",b)
+                a=a.lower().strip()
+                data.update({a.replace(":",""):b})
+            if len(str(data['postcode']))<=0:
+                continue
+            huisnummer=""
+            street=""
+            huisnummer_extentie=""
+            ads=data['adres'].split(" ")
+            huisnummer=str(ads[-1]).strip()
+            street=ads[0]
+            for id in roman:
+                if id in huisnummer:
+                    huisnummer_extentie=id
 
-                data.update({"house_id":house_id})
-                print(data)
-                print("------------------------------------------------------------------------")
-                table.put_item(Item=data)
-                print("------111111111111111111--------------")
-            except:
-                pass
-        driver.close()
-    except:
-        driver.close()
-        continue
-        
+            footers=[]    
+            if len(huisnummer_extentie)==0:
+                footers = re.findall(r'[a-z][a-z][a-z][a-z][a-z]',huisnummer)  
+            if len(footers)==0:
+                footers = re.findall(r'[a-z][a-z][a-z][a-z]',huisnummer)  
+            if len(footers)==0:
+                footers = re.findall(r'[a-z][a-z][a-z]',huisnummer)
+            if len(footers)==0:
+                footers = re.findall(r'[a-z][a-z]',huisnummer) 
+            if len(footers)==0:
+                footers = re.findall(r'[a-z]',huisnummer) 
+            if len(footers)==0:
+                footers = re.findall(r'[A-Z][A-Z][A-Z][A-Z]',huisnummer) 
+            if len(footers)==0:
+                footers = re.findall(r'[A-Z][A-Z][A-Z]',huisnummer) 
+            if len(footers)==0:
+                footers = re.findall(r'[A-Z][A-Z]',huisnummer) 
+            if len(footers)==0:
+                footers = re.findall(r'[A-Z]',huisnummer) 
+            # printing result 
+            print ("The list of words is : " +  str(footers))
+
+            if len(footers)>0:
+                huisnummer_extentie=footers[0]
+            huisnummer=huisnummer.replace(huisnummer_extentie,"")
+
+            for i in ads:
+                if len(i)==1:
+                    huisnummer_extentie=i
+            data.update({"street":street,"huisnummer":huisnummer,"huisnummer_extentie":huisnummer_extentie})
+            for c,d in zip(date,price):
+            #     print(c,d)
+                num=str(c).split("-")
+            #     print(num)
+                key="wozwaarde_"+str(num[-1])
+        #         print(key,d)
+                data.update({key:d})
+            if len(huisnummer_extentie)==0:
+                house_id=str(data['postcode']).strip().replace(" ","")+"-"+str(data['huisnummer']).strip()
+            else:
+                house_id=str(data['postcode']).strip().replace(" ","")+"-"+str(data['huisnummer']).strip()+"-"+str(data['huisnummer_extentie'])
+
+            data.update({"house_id":house_id})
+            print(data)
+            print("------------------------------------------------------------------------")
+            table.put_item(Item=data)
+            print("------111111111111111111--------------")
+        except:
+            pass
+    driver.close()
+
     
     
     
