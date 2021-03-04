@@ -5,6 +5,10 @@
 
 
 from selenium import webdriver #used for open site
+from selenium.webdriver.firefox.options import Options
+options = Options()
+options.add_argument("--headless")
+
 import csv
 import time
 from selenium.webdriver.common.keys import Keys
@@ -180,7 +184,7 @@ for codess in body:
 for codess in body:
     print("coooooo",codess)
     try:
-        driver = webdriver.Firefox()
+        driver = webdriver.Firefox(firefox_options=options)
         driver.get("https://www.wozwaardeloket.nl/index.jsp")
         time.sleep(4)
         driver.find_element_by_xpath("//input[@class='ui-button ui-widget ui-state-default ui-corner-all']").click()
